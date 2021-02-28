@@ -4,7 +4,7 @@
 
 ### Other ###
 static/bc
-server
+server/node_modules
 notes.txt
 
 ### Node ###
