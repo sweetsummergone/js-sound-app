@@ -1,0 +1,110 @@
+/* Global params */
+
+body{
+background-color: #000; /* Цвет фона веб-страницы */
+color: #AAA !important;
+}
+*{
+  font-family: 'PT Sans Narrow', sans-serif;
+}
+h1 {
+color: #AAA;
+}
+p {
+background-color: maroon; /* Цвет фона под текстом параграфа */
+color: white; /* Цвет текста */
+}
+
+/* Elements */
+.obtn {
+  background: rgba(0, 0, 25, 0);
+  border-color: rgba(0,0,25,0) !important;
+}
+
+.obtn:active {
+  background: rgba(0, 0, 25, 0);
+  border-color: rgba(0,0,25,0) !important;
+}
+
+.obtn:visited {
+  background: rgba(0, 0, 25, 0);
+  border-color: rgba(0,0,25,0) !important;
+}
+
+
+/* background */
+
+canvas {
+  background-color: rgba(0,0,0,0);
+  position: fixed;
+  z-index: 3;
+  top: 0;
+  left: 0;
+}
+
+#background{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 2;
+}
+
+
+
+/* Control Elements */
+
+#controlMenu{
+    top: 33%;
+    left: 33%;
+    width: 30%;
+    border: 3px solid green;
+    padding: 10px;
+    text-align: center;
+    position: absolute;
+    background: rgba(0, 0, 25, 0);
+    border-color: rgba(0,0,25,0) !important;
+    z-index: 4;
+}
+
+audio
+{
+    -webkit-transition:all 0.5s linear;
+    -moz-transition:all 0.5s linear;
+    -o-transition:all 0.5s linear;
+    transition:all 0.5s linear;
+    -moz-border-radius:7px 7px 7px 7px ;
+    -webkit-border-radius:7px 7px 7px 7px ;
+    border-radius:7px 7px 7px 7px ;
+}
+
+/* Modal song list */
+
+.modal-content{
+   background-color: rgba(0, 0, 25, 0) !important;
+   border-color: rgba(0, 0, 25, 0) !important;
+}
+
+.list-group{
+  height:400px;
+  overflow-y: scroll;
+}
+
+.list-group-item{
+
+  background-color: rgba(0, 0, 25, 0) !important;
+  border-color: rgba(0, 0, 25, 0) !important;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}

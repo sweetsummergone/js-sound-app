@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Limfix Generation | Create your calm playlist</title>
+    <!-- Local Engine Scripts -->
+    <script type="text/javascript" src="js/rythm.min.js"></script>
+    <script type="text/javascript" src="js/sketch.min.js"></script>
+    <!-- Style + Fonts -->
+    <link rel="stylesheet" href="css/main.css" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+  </head>
+
+  <body>
+    <!-- Modal -->
+<!--    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">-->
+<!--      <div class="modal-dialog modal-dialog-centered" role="document">-->
+<!--        <div class="modal-content">-->
+<!--          <div class="modal-header">-->
+<!--            <h5 class="modal-title" id="exampleModalCenterTitle">Current Playlist</h5>-->
+<!--            <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--              <span aria-hidden="true">&times;</span>-->
+<!--            </button>-->
+<!--          </div>-->
+<!--          <div class="modal-body">-->
+<!--&lt;!&ndash;            <div class="list-group">&ndash;&gt;-->
+<!--&lt;!&ndash;              <a href="#" class="list-group-item list-group-item-action active">&ndash;&gt;-->
+<!--&lt;!&ndash;              M.O.O.N - Dust&ndash;&gt;-->
+<!--&lt;!&ndash;              </a>&ndash;&gt;-->
+<!--&lt;!&ndash;              <a href="#" class="list-group-item list-group-item-action">HOME - Resonance</a>&ndash;&gt;-->
+<!--&lt;!&ndash;              <a href="#" class="list-group-item list-group-item-action">Peturbator - Technoir</a>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--          </div>-->
+
+<!--          <div class="modal-footer">-->
+<!--            <div id="play-pause-container">-->
+<!--              <span class="button amplitude-play-pause amplitude-paused" amplitude-playlist-main-play-pause="true">Play</span>-->
+<!--              <span class="amplitude-next">Next</span>-->
+<!--            </div>-->
+
+<!--            <div class="input-group mb-3">-->
+<!--              <div class="custom-file">-->
+<!--                <input type="file" class="custom-file-input" id="thefile" accept="audio/*">-->
+<!--                <label class="custom-file-label" for="thefile">Choose file</label>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+    <div id="controlMenu">
+<!--      <button type="button" class="button obtn" data-toggle="modal" data-target="#exampleModalCenter">-->
+<!--        <i data-feather="music"></i>-->
+<!--        <script>-->
+<!--          feather.replace()-->
+<!--        </script>-->
+<!--      </button>-->
+      <div>
+        <audio id="player" src="http://localhost/play.php?id=RDcLrI_uyyORQ" crossOrigin = 'anonymous' controls autoplay muted="muted"></audio>
+      </div>
+      <div>
+        <input class="form-control" id="vinput" type="text" value="https://youtu.be/cLrI_uyyORQ?list=RDcLrI_uyyORQ" />
+        <hr>
+        <button class="btn btn-light" id="play">Play</button>
+      </div>
+
+    </div>
+
+    <div id="background" class="rythm color2">
+      <div id="city">
+        <script type="text/javascript" src="js/anim.js"></script>
+      </div>
+    </div>
+
+    <script src="js/player.js"></script>
+  </body>
+
+</html>
