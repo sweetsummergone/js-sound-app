@@ -1,7 +1,7 @@
 /* Global params */
 
 body{
-background-color: #000; /* Цвет фона веб-страницы */
+background-color: #000;
 color: #AAA !important;
 }
 *{
@@ -11,10 +11,12 @@ h1 {
 color: #AAA;
 }
 p {
-background-color: maroon; /* Цвет фона под текстом параграфа */
-color: white; /* Цвет текста */
+background-color: maroon;
+color: white;
 }
-
+a {
+    color: white;
+}
 /* Elements */
 .obtn {
   background: rgba(0, 0, 25, 0);

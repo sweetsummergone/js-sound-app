@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Limfix Generation | Create your calm playlist</title>
+        <title>CalmJS | Create your calm playlist</title>
         <!-- Local Engine Scripts -->
         <script type="text/javascript" src="js/rythm.min.js"></script>
         <script type="text/javascript" src="js/sketch.min.js"></script>
@@ -22,73 +22,63 @@
     <body>
         <div id="load"></div>
         <div id="contents">
-    <!-- Modal -->
-<!--    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">-->
-<!--      <div class="modal-dialog modal-dialog-centered" role="document">-->
-<!--        <div class="modal-content">-->
-<!--          <div class="modal-header">-->
-<!--            <h5 class="modal-title" id="exampleModalCenterTitle">Current Playlist</h5>-->
-<!--            <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-<!--              <span aria-hidden="true">&times;</span>-->
-<!--            </button>-->
-<!--          </div>-->
-<!--          <div class="modal-body">-->
-<!--&lt;!&ndash;            <div class="list-group">&ndash;&gt;-->
-<!--&lt;!&ndash;              <a href="#" class="list-group-item list-group-item-action active">&ndash;&gt;-->
-<!--&lt;!&ndash;              M.O.O.N - Dust&ndash;&gt;-->
-<!--&lt;!&ndash;              </a>&ndash;&gt;-->
-<!--&lt;!&ndash;              <a href="#" class="list-group-item list-group-item-action">HOME - Resonance</a>&ndash;&gt;-->
-<!--&lt;!&ndash;              <a href="#" class="list-group-item list-group-item-action">Peturbator - Technoir</a>&ndash;&gt;-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-<!--          </div>-->
-
-<!--          <div class="modal-footer">-->
-<!--            <div id="play-pause-container">-->
-<!--              <span class="button amplitude-play-pause amplitude-paused" amplitude-playlist-main-play-pause="true">Play</span>-->
-<!--              <span class="amplitude-next">Next</span>-->
-<!--            </div>-->
-
-<!--            <div class="input-group mb-3">-->
-<!--              <div class="custom-file">-->
-<!--                <input type="file" class="custom-file-input" id="thefile" accept="audio/*">-->
-<!--                <label class="custom-file-label" for="thefile">Choose file</label>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-
-            <div class="rythm-bass"></div>
-
-        <div id="controlMenu">
-<!--      <button type="button" class="button obtn" data-toggle="modal" data-target="#exampleModalCenter">-->
-<!--        <i data-feather="music"></i>-->
-<!--        <script>-->
-<!--          feather.replace()-->
-<!--        </script>-->
-<!--      </button>-->
-            <div>
-                <audio id="player" src="http://localhost:3000/play/cLrI_uyyORQ" autoplay></audio>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">Current Playlist</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div id= "songList" class="list-group">
+                                <h5 id="msgStatus">It's Empty For Now</h5>
+<!--                                <a href="#" class="list-group-item list-group-item-action active">-->
+<!--                                    M.O.O.N - Dust-->
+<!--                                </a>-->
+<!--                                <a href="#" class="list-group-item list-group-item-action">HOME - Resonance</a>-->
+<!--                                <a href="#" class="list-group-item list-group-item-action">Peturbator - Technoir</a>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div>
-                <input class="form-control" id="vinput" type="text" value="https://youtu.be/cLrI_uyyORQ" />
-                <hr>
+
+            <div id="controlMenu">
+
+                <div>
+                    <audio id="player" src="http://localhost:3000/play/cLrI_uyyORQ" autoplay></audio>
+                </div>
+                <div>
+                    <input class="form-control" id="vinput" type="text" value="https://youtu.be/cLrI_uyyORQ" />
+                    <hr>
+                </div>
+
+                <button type="button" class="button obtn" data-toggle="modal" data-target="#exampleModalCenter">
+                    <i class="fas fa-music"></i>
+                </button>
+
+                <button type="button" class="button obtn" id="play">
+                    <i class="fas fa-play"></i>
+                </button>
+
+                <button type="button" class="button obtn" id="pause" hidden>
+                    <i class="fas fa-pause"></i>
+                </button>
+
+                <button type="button" class="button obtn" id="addMusic">
+                    <i class="fas fa-plus"></i>
+                </button>
+
             </div>
-            <button type="button" class="button obtn" id="play">
-                <i class="fas fa-play"></i>
-            </button>
 
-            <button type="button" class="button obtn" id="pause" hidden>
-                <i class="fas fa-pause"></i>
-            </button>
-
-        </div>
-
-        <div id="background" class="rythm color2">
-            <div id="city">
-            <script type="text/javascript" src="js/anim.js"></script>
-        </div>
+            <div id="background" class="rythm color2">
+                <div id="city">
+                <script type="text/javascript" src="js/anim.js"></script>
+            </div>
         </div>
 
         <script src="js/player.js"></script>

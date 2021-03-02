@@ -1,9 +1,12 @@
 const {exec,spawn} = require("child_process");
 const express = require("express");
+const bodyParser = require('body-parser');
+
 const app = express();
 
 app.use(express.static(__dirname));
 app.use(express.static('static'));
+app.use(bodyParser.json());
 
 const server = app.listen(3000, '0.0.0.0', function() {
     console.log('working on', server.address().port);
@@ -23,8 +26,7 @@ app.get('/play/:vid', function(req, res) {
             return;
         }
 
-        const curl = spawn('curl.exe', [stdout.trim(), '-L', '--output', '-']);
-
+        const curl = spawn('curl.exe', [stdout.trim(), '-L', '--output', '-'])
         curl.stdout.on('data', (data) => {
             res.write(data);
         });
@@ -34,4 +36,25 @@ app.get('/play/:vid', function(req, res) {
         });
 
     });
+
+    // const videoName = exec(`youtube-dl -o '%(title)s' ${url}`);
+    // console.log(videoName);
+});
+
+app.get('/playlist/:plist', function(req, res) {
+    const url = 'https://www.youtube.com/playlist?list='+req.param("plist");
+    res.setHeader("Content-Type", "application/json");
+    exec(`youtube-dl -J --flat-playlist ${url}`, (error, stdout, stderr) => {
+        if (error) {
+            console.log(`error: ${error.message}`);
+            return;
+        }
+
+        if (stderr) {
+            console.log(`stderr: ${stderr}`);
+            return;
+        }
+        res.json(stdout);
+    });
+
 });
