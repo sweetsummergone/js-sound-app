@@ -14,9 +14,6 @@ p {
 background-color: maroon;
 color: white;
 }
-a {
-    color: white;
-}
 /* Elements */
 .obtn {
   background: rgba(0, 0, 25, 0);
@@ -87,7 +84,7 @@ audio:hover, audio:focus, audio:active
 /* Modal song list */
 
 .modal-content{
-   background-color: rgba(0, 0, 25, 0) !important;
+   background-color: rgba(0, 0, 25, 0.5) !important;
    border-color: rgba(0, 0, 25, 0) !important;
 }
 
@@ -100,6 +97,10 @@ audio:hover, audio:focus, audio:active
 
   background-color: rgba(0, 0, 25, 0) !important;
   border-color: rgba(0, 0, 25, 0) !important;
+}
+
+.list-group-item-action{
+    color: #c0c6e0 !important;
 }
 
 ::-webkit-scrollbar {

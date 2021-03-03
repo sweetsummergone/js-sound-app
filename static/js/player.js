@@ -12,35 +12,42 @@ document.onreadystatechange = function () {
         const audio = document.getElementById('player');
 
         let vid = document.getElementById('vinput').value;
+        let tempURL = document.getElementById('vinput').value;
         let rythm = null;
 
         document.querySelector('.color2').style.background = 'rgb(100, 200, 250)';
 
         buttonPlay.addEventListener('click', function (e) {
-            if (rythm == null)
+            if (rythm == null){
                 rythm = new Rythm()
-
-            rythm.connectExternalAudioElement(audio)
-            if(document.getElementById('vinput').value !== vid) {
-                vid = document.getElementById('vinput').value;
-                addPlaylist(vid)
-                const videoRgx = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-
-                const videoMatch = vid.match(videoRgx);
-
-                vid = videoMatch && videoMatch[7].length === 11 ? videoMatch[7] : false;
-
-                if(vid){
-                    playAudio(vid)
-                }
-            } else {
+                rythm.connectExternalAudioElement(audio)
                 rythm.addRythm('color2', 'color', 0, 10, {
                     from: [220, 39, 106],
                     to: [100, 200, 250]
                 })
 
-                audio.play();
+                rythm.addRythm('fontColor2', 'color', 0, 10, {
+                    from: [0,0,255],
+                    to:[255,0,255]
+                })
                 rythm.start();
+            }
+
+            if(document.getElementById('vinput').value !== tempURL) {
+                tempURL = document.getElementById('vinput').value;
+                vid = tempURL;
+                addPlaylist(vid)
+                const videoRgx = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+                const videoMatch = vid.match(videoRgx);
+                vid = videoMatch && videoMatch[7].length === 11 ? videoMatch[7] : false;
+                // vid ? playAudio(vid) : audio.play();
+
+                if(vid){
+                    playAudio(vid)
+                }
+            } else {
+                audio.play();
+                // rythm.start();
             }
 
             buttonPlay.hidden = true;
@@ -61,6 +68,11 @@ document.onreadystatechange = function () {
                 to: [100, 200, 250]
             })
 
+            rythm.addRythm('fontColor2', 'color', 0, 10, {
+                from: [0,0,255],
+                to:[255,0,255]
+            })
+
             audio.play();
             rythm.start();
             buttonPlay.hidden = true;
@@ -75,22 +87,15 @@ document.onreadystatechange = function () {
             if(plist) {
                 const plistJSON = `http://localhost:3000/playlist/${plist}`
                 let el = document.getElementById("songList");
-                console.log(el)
-                console.log(document.getElementById("songList").getElementsByTagName("a").length)
 
                 fetch(plistJSON)
                     .then(res => res.json())
                     .then((out) => {
-                        document.getElementById("msgStatus").style.visibility = "hidden";
+                        document.getElementById("msgStatus").innerHTML = "Current Playlist";
                         let entriesJson = JSON.parse(out)["entries"];
-                        let tag = document.createElement("div")
-                        // tag.innerHTML = `<a href="javascript:document.getElementsByName('audio').src = \`http://localhost:3000/play/${entriesJson[0]["id"]}\`" class=\"list-group-item list-group-item-action\">${entriesJson[0]["title"]}</a>`;
-                        tag.innerHTML = `<a href="#" class=\"list-group-item list-group-item-action el-video\" id="${entriesJson[0]["id"]}">${entriesJson[0]["title"]}</a>`;
-                        el.appendChild(tag);
-                        for(let i = 1; i < entriesJson.length; i++){
+                        for(let i = 0; i < entriesJson.length-1; i++){
                             let tag = document.createElement("div")
-                            // tag.innerHTML = `<a href="javascript:document.getElementsByName('audio').src = \`http://localhost:3000/play/${entriesJson[i]["id"]}\`" class=\"list-group-item list-group-item-action\">${entriesJson[i]["title"]}</a>`;
-                            tag.innerHTML = `<a href="#" class=\"list-group-item list-group-item-action el-video\" id="${entriesJson[i]["id"]}">${entriesJson[i]["title"]}</a>`;
+                            tag.innerHTML = `<div class="rythm font fontColor2" style><a href="#" class=\"list-group-item list-group-item-action el-video\" id="${entriesJson[i]["id"]}">${entriesJson[i]["title"]}</a></div>`;
                             el.appendChild(tag);
                         }
                         playAudio(entriesJson[0]["id"])
@@ -100,6 +105,10 @@ document.onreadystatechange = function () {
                         //
                         // const nextMusic = url, => {                              // In Work
                         //
+                        // }
+
+                        // audio.onended = function(){
+                        //     nextSong(url);
                         // }
 
                         document.querySelectorAll('.el-video').forEach(item => {
