@@ -13,25 +13,25 @@ document.onreadystatechange = function () {
 
         let vid = document.getElementById('vinput').value;
         let tempURL = document.getElementById('vinput').value;
-        let rythm = null;
+        let rythm = new Rythm();
+
+        rythm.addRythm('color2', 'color', 0, 10, {
+            from: [220, 39, 106],
+            to: [100, 200, 250]
+        })
+
+        rythm.addRythm('fontColor2', 'fontColor', 0, 10, {
+            from: [220, 39, 106],
+            to: [100, 200, 250]
+        })
 
         document.querySelector('.color2').style.background = 'rgb(100, 200, 250)';
 
         buttonPlay.addEventListener('click', function (e) {
-            if (rythm == null){
-                rythm = new Rythm()
-                rythm.connectExternalAudioElement(audio)
-                rythm.addRythm('color2', 'color', 0, 10, {
-                    from: [220, 39, 106],
-                    to: [100, 200, 250]
-                })
 
-                rythm.addRythm('fontColor2', 'color', 0, 10, {
-                    from: [0,0,255],
-                    to:[255,0,255]
-                })
-                rythm.start();
-            }
+            rythm.connectExternalAudioElement(audio)
+
+            rythm.start();
 
             if(document.getElementById('vinput').value !== tempURL) {
                 tempURL = document.getElementById('vinput').value;
@@ -40,14 +40,12 @@ document.onreadystatechange = function () {
                 const videoRgx = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
                 const videoMatch = vid.match(videoRgx);
                 vid = videoMatch && videoMatch[7].length === 11 ? videoMatch[7] : false;
-                // vid ? playAudio(vid) : audio.play();
 
                 if(vid){
                     playAudio(vid)
                 }
             } else {
                 audio.play();
-                // rythm.start();
             }
 
             buttonPlay.hidden = true;
@@ -63,15 +61,6 @@ document.onreadystatechange = function () {
         const playAudio = url => {
             audio.src = `http://localhost:3000/play/${url}`;
             audio.volume = 0.7;
-            rythm.addRythm('color2', 'color', 0, 10, {
-                from: [220, 39, 106],
-                to: [100, 200, 250]
-            })
-
-            rythm.addRythm('fontColor2', 'color', 0, 10, {
-                from: [0,0,255],
-                to:[255,0,255]
-            })
 
             audio.play();
             rythm.start();
@@ -95,21 +84,10 @@ document.onreadystatechange = function () {
                         let entriesJson = JSON.parse(out)["entries"];
                         for(let i = 0; i < entriesJson.length-1; i++){
                             let tag = document.createElement("div")
-                            tag.innerHTML = `<div class="rythm font fontColor2" style><a href="#" class=\"list-group-item list-group-item-action el-video\" id="${entriesJson[i]["id"]}">${entriesJson[i]["title"]}</a></div>`;
+                            tag.innerHTML = `<div class="el-video fontColor2" id="${entriesJson[i]["id"]}" style>${entriesJson[i]["title"]}</div>`;
                             el.appendChild(tag);
                         }
                         playAudio(entriesJson[0]["id"])
-
-
-                        // audio.addEventListener('ended',nextMusic, false);
-                        //
-                        // const nextMusic = url, => {                              // In Work
-                        //
-                        // }
-
-                        // audio.onended = function(){
-                        //     nextSong(url);
-                        // }
 
                         document.querySelectorAll('.el-video').forEach(item => {
                             item.addEventListener('click', event => {
