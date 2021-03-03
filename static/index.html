@@ -53,15 +53,17 @@
                     <audio id="player" src="http://localhost:3000/play/cLrI_uyyORQ"></audio>
                 </div>
 
-                <div class="rythm fontColor2">Hello</div>
-
                 <div>
-                    <input class="form-control" id="vinput" type="text" value="https://youtu.be/cLrI_uyyORQ" />
+                    <input class="form-control" id="vinput" type="text"/>
                     <hr>
                 </div>
 
                 <button type="button" class="button obtn" data-toggle="modal" data-target="#exampleModalCenter">
                     <i class="fas fa-music"></i>
+                </button>
+
+                <button type="button" class="button obtn" id="prevMusic">
+                    <i class="fas fa-fast-backward"></i>
                 </button>
 
                 <button type="button" class="button obtn" id="play">
@@ -70,6 +72,10 @@
 
                 <button type="button" class="button obtn" id="pause" hidden>
                     <i class="fas fa-pause"></i>
+                </button>
+
+                <button type="button" class="button obtn" id="nextMusic">
+                    <i class="fas fa-fast-forward"></i>
                 </button>
 
                 <button type="button" class="button obtn" id="addMusic">

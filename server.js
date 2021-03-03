@@ -58,3 +58,21 @@ app.get('/playlist/:plist', function(req, res) {
     });
 
 });
+
+app.get('/audio/:src', function(req, res) {
+    const url = 'https://www.youtube.com/watch?v='+req.param("src");
+    res.setHeader("Content-Type", "text/plain");
+    exec(`youtube-dl --get-title ${url}`, (error, stdout, stderr) => {
+        if (error) {
+            console.log(`error: ${error.message}`);
+            return;
+        }
+
+        if (stderr) {
+            console.log(`stderr: ${stderr}`);
+            return;
+        }
+        res.send(stdout.trim());
+    });
+
+});

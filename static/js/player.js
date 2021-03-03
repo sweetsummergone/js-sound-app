@@ -4,16 +4,32 @@ document.onreadystatechange = function () {
         document.getElementById('contents').style.visibility="hidden";
     }
     else if (state === "complete") {
+        let audioArray = [{title:"Vanilla - Fuji",id:"cLrI_uyyORQ"}];
+
         document.getElementById('load').style.visibility="hidden";
         document.getElementById('contents').style.visibility="visible";
+        document.getElementById('vinput').value = "https://www.youtube.com/watch?v="+audioArray[0].id
+        console.log(document.getElementById('vinput'))
 
+        const buttonNext = document.getElementById('nextMusic');
+        const buttonPrev = document.getElementById('prevMusic');
         const buttonPlay = document.getElementById('play');
         const buttonPause = document.getElementById('pause');
+        const buttonAdd = document.getElementById('addMusic');
         const audio = document.getElementById('player');
+        const rythm = new Rythm();
 
         let vid = document.getElementById('vinput').value;
         let tempURL = document.getElementById('vinput').value;
-        let rythm = new Rythm();
+        let prevAudioId = audioArray[0].id;
+        let nextAudioId = audioArray[0].id;
+        let currentTitle;
+
+        const videoRgx = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+        const playlistRgx = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(list=))\??v?=?([^#&?]*).*/;
+
+        document.querySelector('.color2').style.background = 'rgb(100, 200, 250)';
+        rythm.connectExternalAudioElement(audio)
 
         rythm.addRythm('color2', 'color', 0, 10, {
             from: [220, 39, 106],
@@ -25,19 +41,47 @@ document.onreadystatechange = function () {
             to: [100, 200, 250]
         })
 
-        document.querySelector('.color2').style.background = 'rgb(100, 200, 250)';
+        audio.addEventListener('ended', () => {
+            playAudio(nextAudioId)
+        })
+
+        buttonPrev.addEventListener('click', function (e) {
+            playAudio(prevAudioId)
+        })
+
+        buttonNext.addEventListener('click', function (e) {
+            playAudio(nextAudioId)
+        })
+
+        buttonAdd.addEventListener('click', function (e){
+            vid = document.getElementById('vinput').value;
+            const videoMatch = vid.match(videoRgx);
+            const playlistMatch = vid.match(playlistRgx);
+            vid = videoMatch && videoMatch[7].length === 11 ? videoMatch[7] : false;
+            let pid = playlistMatch ? playlistMatch[6] : false;
+            if(vid){
+                fetch(`http://localhost:3000/audio/${vid}`)
+                    .then(response => response.text())
+                    .then((response) => {
+                        currentTitle = response
+                        addToPlaylist({
+                            title: response,
+                            id: vid
+                        })
+                    })
+                    .catch(err => console.log(err))
+            } else if(pid){
+                addPlaylist(pid)
+            }
+        })
 
         buttonPlay.addEventListener('click', function (e) {
-
-            rythm.connectExternalAudioElement(audio)
 
             rythm.start();
 
             if(document.getElementById('vinput').value !== tempURL) {
                 tempURL = document.getElementById('vinput').value;
                 vid = tempURL;
-                addPlaylist(vid)
-                const videoRgx = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
                 const videoMatch = vid.match(videoRgx);
                 vid = videoMatch && videoMatch[7].length === 11 ? videoMatch[7] : false;
 
@@ -45,7 +89,7 @@ document.onreadystatechange = function () {
                     playAudio(vid)
                 }
             } else {
-                audio.play();
+                audio.play()
             }
 
             buttonPlay.hidden = true;
@@ -60,45 +104,56 @@ document.onreadystatechange = function () {
 
         const playAudio = url => {
             audio.src = `http://localhost:3000/play/${url}`;
+            document.getElementById("msgStatus").innerHTML = "Now playing: " + currentTitle;
+            let index = audioArray.findIndex(p => p.id === url)
+            prevAudioId = index === 0 ? audioArray[audioArray.length-1].id : audioArray[index-1].id
+            nextAudioId = index === audioArray.length-1 ? audioArray[0].id : audioArray[index+1].id
             audio.volume = 0.7;
-
             audio.play();
             rythm.start();
             buttonPlay.hidden = true;
             buttonPause.hidden = false;
         }
 
-        const addPlaylist = url => {
-            const playlistRgx = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(list=))\??v?=?([^#&?]*).*/;
-            const playlistMatch = url.match(playlistRgx);
-            const plist = playlistMatch ? playlistMatch[6] : false;
-
-            if(plist) {
-                const plistJSON = `http://localhost:3000/playlist/${plist}`
-                let el = document.getElementById("songList");
-
-                fetch(plistJSON)
-                    .then(res => res.json())
-                    .then((out) => {
-                        document.getElementById("msgStatus").innerHTML = "Current Playlist";
-                        let entriesJson = JSON.parse(out)["entries"];
-                        for(let i = 0; i < entriesJson.length-1; i++){
-                            let tag = document.createElement("div")
-                            tag.innerHTML = `<div class="el-video fontColor2" id="${entriesJson[i]["id"]}" style>${entriesJson[i]["title"]}</div>`;
-                            el.appendChild(tag);
-                        }
-                        playAudio(entriesJson[0]["id"])
-
-                        document.querySelectorAll('.el-video').forEach(item => {
-                            item.addEventListener('click', event => {
-                                playAudio(item.id)
-                            })
-                        })
-                    })
-                    .catch(err => { throw err });
-            }
+        const addHandlers = function() {
+            let videoIds = document.querySelectorAll('.el-video');
+            videoIds.forEach((item,index) => {
+                item.addEventListener('click', event => {
+                    playAudio(item.id)
+                    currentTitle = videoIds[index].innerText
+                    prevAudioId = index === 0 ? videoIds[videoIds.length-1].id : videoIds[index-1].id
+                    nextAudioId = index === videoIds.length-1 ? videoIds[0].id : videoIds[index+1].id
+                })
+            })
         }
 
+        const addPlaylist = url => {
+            const plistJSON = `http://localhost:3000/playlist/${url}`
+
+            fetch(plistJSON)
+                .then(res => res.json())
+                .then((out) => {
+                    let entriesJson = JSON.parse(out)["entries"];
+                    for(let i = 0; i < entriesJson.length-1; i++){
+                        addToPlaylist(entriesJson[i])
+                        audioArray.push({
+                            title: entriesJson[i]["title"],
+                            id: entriesJson[i]["id"]
+                        })
+                    }
+                    addHandlers()
+                    playAudio(entriesJson[0]["id"])
+                })
+                .catch(err => { throw err });
+        }
+
+        const addToPlaylist = el => {
+            let sl = document.getElementById("songList");
+            let tag = document.createElement("div")
+            tag.innerHTML = `<div class="el-video fontColor2" id="${el["id"]}" style>${el["title"]}</div>`;
+            sl.appendChild(tag);
+            addHandlers();
+        }
     }
 }
 
