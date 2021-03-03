@@ -68,6 +68,8 @@ document.onreadystatechange = function () {
                             title: response,
                             id: vid
                         })
+
+                        addHandlers()
                     })
                     .catch(err => console.log(err))
             } else if(pid){
@@ -152,7 +154,6 @@ document.onreadystatechange = function () {
             let tag = document.createElement("div")
             tag.innerHTML = `<div class="el-video fontColor2" id="${el["id"]}" style>${el["title"]}</div>`;
             sl.appendChild(tag);
-            addHandlers();
         }
     }
 }
