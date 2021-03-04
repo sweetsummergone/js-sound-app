@@ -12,6 +12,8 @@ const server = app.listen(3000, '0.0.0.0', function() {
     console.log('working on', server.address().port);
 });
 
+app.get('/favicon.ico', (req, res) => res.status(204));
+
 app.get('/play/:vid', function(req, res) {
     const url = 'https://www.youtube.com/watch?v='+req.param("vid");
     res.setHeader("Content-Type", "video/mp4");
@@ -36,9 +38,6 @@ app.get('/play/:vid', function(req, res) {
         });
 
     });
-
-    // const videoName = exec(`youtube-dl -o '%(title)s' ${url}`);
-    // console.log(videoName);
 });
 
 app.get('/playlist/:plist', function(req, res) {

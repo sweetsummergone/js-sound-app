@@ -9,7 +9,9 @@ document.onreadystatechange = function () {
         document.getElementById('load').style.visibility="hidden";
         document.getElementById('contents').style.visibility="visible";
         document.getElementById('vinput').value = "https://www.youtube.com/watch?v="+audioArray[0].id
-        console.log(document.getElementById('vinput'))
+
+        const videoRgx = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+        const playlistRgx = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(list=))\??v?=?([^#&?]*).*/;
 
         const buttonNext = document.getElementById('nextMusic');
         const buttonPrev = document.getElementById('prevMusic');
@@ -23,10 +25,10 @@ document.onreadystatechange = function () {
         let tempURL = document.getElementById('vinput').value;
         let prevAudioId = audioArray[0].id;
         let nextAudioId = audioArray[0].id;
-        let currentTitle;
 
-        const videoRgx = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-        const playlistRgx = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(list=))\??v?=?([^#&?]*).*/;
+        let tempName;
+        let tempId;
+        let currentTitle;
 
         document.querySelector('.color2').style.background = 'rgb(100, 200, 250)';
         rythm.connectExternalAudioElement(audio)
@@ -60,18 +62,7 @@ document.onreadystatechange = function () {
             vid = videoMatch && videoMatch[7].length === 11 ? videoMatch[7] : false;
             let pid = playlistMatch ? playlistMatch[6] : false;
             if(vid){
-                fetch(`http://localhost:3000/audio/${vid}`)
-                    .then(response => response.text())
-                    .then((response) => {
-                        currentTitle = response
-                        addToPlaylist({
-                            title: response,
-                            id: vid
-                        })
-
-                        addHandlers()
-                    })
-                    .catch(err => console.log(err))
+                fetchInfo(vid,true)
             } else if(pid){
                 addPlaylist(pid)
             }
@@ -89,13 +80,21 @@ document.onreadystatechange = function () {
 
                 if(vid){
                     playAudio(vid)
+                    buttonPlay.hidden = true;
+                    buttonPause.hidden = false;
                 }
-            } else {
-                audio.play()
-            }
 
-            buttonPlay.hidden = true;
-            buttonPause.hidden = false;
+            } else {
+                vid = tempURL;
+                const videoMatch = vid.match(videoRgx);
+                vid = videoMatch && videoMatch[7].length === 11 ? videoMatch[7] : false;
+                if(vid){
+                    fetchInfo(vid)
+                    audio.play()
+                    buttonPlay.hidden = true;
+                    buttonPause.hidden = false;
+                }
+            }
         });
 
         buttonPause.addEventListener('click', function (e) {
@@ -106,15 +105,38 @@ document.onreadystatechange = function () {
 
         const playAudio = url => {
             audio.src = `http://localhost:3000/play/${url}`;
-            document.getElementById("msgStatus").innerHTML = "Now playing: " + currentTitle;
             let index = audioArray.findIndex(p => p.id === url)
-            prevAudioId = index === 0 ? audioArray[audioArray.length-1].id : audioArray[index-1].id
-            nextAudioId = index === audioArray.length-1 ? audioArray[0].id : audioArray[index+1].id
+            if(index!==-1){
+                prevAudioId = index === 0 ? audioArray[audioArray.length-1].id : audioArray[index-1].id
+                nextAudioId = index === audioArray.length-1 ? audioArray[0].id : audioArray[index+1].id
+            }
+            fetchInfo(url)
+            document.getElementById("msgStatus").innerHTML = "Now playing: " + tempName;
+            tempURL = `https://www.youtube.com/watch?v=${tempId}`
             audio.volume = 0.7;
             audio.play();
             rythm.start();
             buttonPlay.hidden = true;
             buttonPause.hidden = false;
+        }
+
+        const fetchInfo = (vid,add = false) => {
+            fetch(`http://localhost:3000/audio/${vid}`)
+                .then(response => response.text())
+                .then((response) => {
+                    currentTitle = response
+                    tempName = response
+                    tempId = vid
+                    if(add) {
+                        addToPlaylist({
+                            title: tempName,
+                            id: tempId
+                        })
+                        addHandlers()
+                    }
+                    document.getElementById("msgStatus").innerHTML = "Now playing: " + tempName;
+                })
+                .catch(err => console.log(err))
         }
 
         const addHandlers = function() {
